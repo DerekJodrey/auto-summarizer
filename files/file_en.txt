@@ -1,0 +1,7 @@
+Over the course of this project we aim to find the best security measures to put into practice to maintain the intended level of privacy. 
+It is safe to say that everybody has a relation to computer security these days.
+We believe we will achieve our goal, with an unique angle by enforcing the necessary security measures that are on par with today’s security threats. 
+As a byproduct we want our users to have a better understanding of computer security by equipping them with the correct tools.
+We do not have the capacity or time to fully support all platforms, operating systems or browsers. 
+In that regard the product is a proof-of-concept. 
+We will however base our implementation on technology that is highly regarded and considered modern.
