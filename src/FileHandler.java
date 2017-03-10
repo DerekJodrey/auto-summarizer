@@ -16,6 +16,11 @@ public class FileHandler {
 		//readFile(filePath);
 	}
 	
+	/**
+	 * Reads file and creates a new entry for every line in the arraylist {@link#lines lines.}   
+	 * @param filePath relative path of the desired file to be bread
+	 * @return
+	 */
 	public static List<String> readFile(String filePath){
 			
 		
@@ -37,7 +42,7 @@ public class FileHandler {
 	/**
 	 * Print everything in the file.
 	 */
-	public void printAll(){
+	public static void printAll(){
 		// print all lines
 		for(String s: lines){
 			System.out.println(s);
