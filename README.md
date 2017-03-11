@@ -1,0 +1,3 @@
+# Auto text summarizer
+
+Under development... 
