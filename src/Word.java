@@ -24,17 +24,23 @@ public class Word {
 		return this.wordText;
 	}
 	
+	/** 
+	 * equals() has to be overwritten since the method is accessed through the {@link Runner#doCount doCount()}-method 
+	 * (specifically the Collections.frequency()-method).
+	 */
 	@Override
 	public boolean equals(Object obj) {
 	    //null instanceof Object will always return false
 	    if (!(obj instanceof Word))
 	      return false;
-	    //NOTE: '==' doesn't compare properly. Have to use 'equals'
-	    return  this.wordText.equals(((Word) obj).wordText);// ? true : false;
+	    
+	    //NOTE: '==' doesn't to the comparing properly. We have to use 'equals'.
+	    return  this.wordText.equals(((Word) obj).wordText) ? true : false;
 	  }
 	
 	/** 
-	 * This has to be overwritten since the hashCode() method is accessed through the {@link Runner#doCount doCount()}-method.
+	 * hashCode() has to be overwritten since the method is accessed through the {@link Runner#doCount doCount()}-method 
+	 * (specifically the Collections.frequency()-method).
 	 */
 	@Override
 	public int hashCode() {
