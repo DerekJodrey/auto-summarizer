@@ -14,8 +14,6 @@ public class Word {
 	@Override
 	public String toString(){
 		return String.format("%-20s ...belongs to sentence %s", this.wordText, this.belongsToSentenceN);
-		//return String.format("%s \t\t ...belongs to sentence %s", this.wordText,this.belongsToSentenceN);
-		//return this.wordText + " \t ...belongs to sentence " + this.belongsToSentenceN;
 	}
 	
 	public static ArrayList<Word> getAllDirtyWords(){
@@ -26,7 +24,31 @@ public class Word {
 		return this.wordText;
 	}
 	
-//	public int hashCode(){
-//		return 1;
-//	}
+	@Override
+	public boolean equals(Object obj) {
+	    //null instanceof Object will always return false
+	    if (!(obj instanceof Word))
+	      return false;
+	    //NOTE: '==' doesn't compare properly. Have to use 'equals'
+	    return  this.wordText.equals(((Word) obj).wordText);// ? true : false;
+	  }
+	
+	/** 
+	 * This has to be overwritten since the hashCode() method is accessed through the {@link Runner#doCount doCount()}-method.
+	 */
+	@Override
+	public int hashCode() {
+		
+		return this.wordText.hashCode();	// we're basing the hashcode on 'wordText'
+	  }
 }
+
+
+
+
+
+
+
+
+
+

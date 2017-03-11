@@ -37,6 +37,7 @@ public class SentenceBuilder {
 		
 		printNewLines();
 		doCount2(cleanWordObjects);
+		printMap();
 				
 
 		
@@ -159,17 +160,22 @@ public class SentenceBuilder {
 		}
 	}
 	
+	
 	// count occurrence of each word
 	public void doCount2(ArrayList<Word> list){
 		int j;
 		
 		for (int i = 0; i < list.size(); i++) {
 			// only run code IFF the key doesn't already exist in the freqMap
-			System.out.println(!freqMap.containsKey(list.get(i)));
+			System.out.println("-----");
+			System.out.println("New word: " + !freqMap.containsKey(list.get(i)));
+			System.out.println("Now considering word: " + list.get(i).getWordText());
 			if(!freqMap.containsKey(list.get(i))){
 				// check frequency of the given string
-				j = Collections.frequency(list, list.get(i).getWordText());	
-				freqMap.put(list.get(i), j);	// (char, frequency)
+				j = Collections.frequency(list, list.get(i));	
+				freqMap.put(list.get(i), j);	// (word, frequency)
+				
+
 
 			}
 			
@@ -218,17 +224,24 @@ public class SentenceBuilder {
 		
 		
 		
-//		//--Word-branch
-//		System.out.println("\n----------Each word and number of occurences-----------");
-//		// print
-//		Set<Word> keySet = freqMap.keySet();										// get the unique keys (Word-object in this case)
-//		Word[] uniqueKeys = keySet.toArray(new Word[keySet.size()]);				// create an array
-//		for (Word string : uniqueKeys) {
-//			int frequency = freqMap.get(string);
-//			System.out.println("Word: " + string + "\t\t Occurences: " + frequency);
-//			
-//		}
 
+
+	}
+	
+	
+	
+	public void printMap(){
+		//--Word-branch
+		System.out.println("\n----------Each word and number of occurences-----------");
+		// print
+		Set<Word> keySet = freqMap.keySet();										// get the unique keys (Word-object in this case)
+		Word[] uniqueKeys = keySet.toArray(new Word[keySet.size()]);				// create an array
+		for (Word string : uniqueKeys) {
+			int frequency = freqMap.get(string);
+			System.out.println("Word: " + string + "\t\t Occurences: " + frequency);
+			
+		}
+		System.out.println("Size of keyset is " + keySet.size());
 	}
 }
 
