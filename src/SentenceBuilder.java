@@ -23,6 +23,7 @@ public class SentenceBuilder {
 		printNewLines();
 		doCount(cleanWordObjects);
 		printMap();
+		printStats();
 				
 
 		
@@ -220,6 +221,15 @@ public class SentenceBuilder {
 			
 		}
 		System.out.println("Size of keyset is " + keySet.size());
+	}
+	
+	public void printStats(){
+		System.out.println("\n---------------Stats--------------------");
+		System.out.format("%-38s %d\n", "Number of lines: ", 		lines.size());
+		System.out.format("%-38s %d\n", "Number of sentences: ", 	sentenceObjects.size());
+		System.out.format("%-38s %d\n", "Number of words: ", 		dirtyWordObjects.size());
+		System.out.format("%-38s %d\n", "Number of stop-words removed: ", 		dirtyWordObjects.size()-cleanWordObjects.size());
+		System.out.format("%-38s %d\n", "Number of words without stop-words: ", cleanWordObjects.size());
 	}
 }
 
