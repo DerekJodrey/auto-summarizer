@@ -1,3 +1,3 @@
-Det er et velkjent faktum. At lesere distraheres av lesbart innhold på en side. 
+Det er et velkjent velkjent faktum. At lesere distraheres av lesbart innhold på en side. 
 Poenget med å bruke Lorem Ipsum. Det er at det har en mer eller mindre normal fordeling av bokstaver i ord. 
-I motsetning til 'Innhold her, innhold her', og gir inntrykk av å være lesbar tekst.
+I motsetning til 'Innhold her, innhold her', og gir inntrykk av å være lesbar tekst tekst.
