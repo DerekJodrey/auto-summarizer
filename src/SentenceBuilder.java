@@ -3,20 +3,25 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * Takes lines provided by FileHandler and populates lists with Sentence- and Word-objects. These holds lists both with and without stop-words.
+ * @author Piraveen
+ *
+ */
 public class SentenceBuilder {
+	// declaring variables
 	private static final String SEPERATORS = ". "; 
-	private int stopWordsRemoved=0;
-	List<String> lines;																//raw lines from file
-	private List<Sentence> sentenceObjects = new ArrayList<Sentence>();				//Sentence-branch: 
+	private int stopWordsRemoved=0;															// for debugging
+	private List<String> lines;																
+	private List<Sentence> sentenceObjects = new ArrayList<Sentence>();
+
+	private List<Word> dirtyWordObjects = new ArrayList<Word>();							// Word-objects with stop-words
+	private ArrayList<Word> cleanWordObjects;												// Word-objects without stop-words	
 	
-	List<Word> dirtyWordObjects = new ArrayList<Word>();							//Word-branch
-	ArrayList<Word> cleanWordObjects;												//Word-branch	
+	private LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// 	why use linkedhashmap?   order = insertion-order
 	
-	LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();	// Word-branch			why use linkedhashmap?   order = insertion-order
-	
-	public SentenceBuilder(String language){
-		getSentences(language);
+	public SentenceBuilder(String language, String filePath){
+		getSentences(language, filePath);
 		getWords(language);
 		removeStopWords(language);	
 		
@@ -26,25 +31,25 @@ public class SentenceBuilder {
 		printStats();
 				
 
-		
+		//FIXME: Handle empty lines/sentences/words/strings
+		//FIXME: Need to ignore numbers 
 	}
 	
-	//FIXME: Handle empty lines/sentences/words/strings
 	
-	
+	//TODO: New delimiter when sentence ends with question mark
 	/**
 	 *  This class reads every line in the document and splits it into sentences.
 	 *  The method is currently statically set to split for either every dot or every <i>". " (dot and a space)</i> using regular expression. 
 	 */
-	public void getSentences(String language){
-		String path = null;
+	public void getSentences(String language, String path){
+		//String path = null;
 		
-		if(language.equals("NO"))
-			path = "files/file_no.txt";
-		else if(language.equals("EN"))
-			path = "files/file_en.txt";
-		else
-			System.err.println("Please set a valid language code.");
+//		if(language.equals("NO"))
+//			path = "files/file_no.txt";
+//		else if(language.equals("EN"))
+//			path = "files/file_en.txt";
+//		else
+//			System.err.println("Please set a valid language code.");
 		
 		
 		FileHandler fh = new FileHandler(path);
@@ -67,7 +72,7 @@ public class SentenceBuilder {
 			//System.out.println(i + "st run");
 			for (String aSentence : splitLines) {
 				//System.out.println(sentence);
-				if(aSentence!=null)				//sentence may be null if the current sentence doesn't have any deliminators
+				if(aSentence!=null)								// sentence=null if the current sentence doesn't have any deliminators
 				{					
 
 					Sentence s = new Sentence(aSentence);
@@ -106,16 +111,14 @@ public class SentenceBuilder {
 			  
 			 // for every sentence, add every word
 			 for (String word : wordsForCurrentSentence) {
-				 // ---Word-branch part
 				 Word w = new Word(word.toLowerCase(), sentenceNo);
 				 dirtyWordObjects.add(w); 	
-				// end Word-branch part---
 			}
  
 		}
 	}
 	
-	// 
+
 	/**
 	 * Clean up word-list by removing stop-words. 
 	 * {@link SentenceBuilder#dirtyWordObjects dirtyWordObjects} is the input, and a clean list without stop-words will be found in
@@ -147,12 +150,6 @@ public class SentenceBuilder {
 	}
 	
 	
-	
-
-	
-
-	
-	
 	// count occurrence of each word
 	public void doCount(ArrayList<Word> list){
 		int freq;
@@ -173,7 +170,6 @@ public class SentenceBuilder {
 			
 		}
 	}
-	
 	
 	
 	// used for debugging
@@ -202,11 +198,7 @@ public class SentenceBuilder {
 		}
 		System.out.println("Removed " + stopWordsRemoved + " stop words.");
 		
-		
-
-
 	}
-	
 	
 	// used for debugging
 	public void printMap(){
@@ -217,21 +209,41 @@ public class SentenceBuilder {
 		Word[] uniqueKeys = keySet.toArray(new Word[keySet.size()]);				// create an array
 		for (Word string : uniqueKeys) {
 			int frequency = freqMap.get(string);
-			System.out.println("Word: " + string + "\t\t Occurences: " + frequency);
+			//System.out.println("Word: " + string.getWordText() + "\t\t Occurences: " + frequency);
+			System.out.printf("Word: %-25s Occurences: %d \n", string.getWordText(), frequency);
 			
 		}
 		System.out.println("Size of keyset is " + keySet.size());
 	}
 	
+	// used for debugging
 	public void printStats(){
-		System.out.println("\n---------------Stats--------------------");
-		System.out.format("%-38s %d\n", "Number of lines: ", 		lines.size());
-		System.out.format("%-38s %d\n", "Number of sentences: ", 	sentenceObjects.size());
-		System.out.format("%-38s %d\n", "Number of words: ", 		dirtyWordObjects.size());
-		System.out.format("%-38s %d\n", "Number of stop-words removed: ", 		dirtyWordObjects.size()-cleanWordObjects.size());
-		System.out.format("%-38s %d\n", "Number of words without stop-words: ", cleanWordObjects.size());
+		
+		System.out.println("\n----------------Stats---------------------");
+		System.out.format("%-40s %d\n", "Number of lines: ", 		lines.size());
+		System.out.format("%-40s %d\n", "Number of sentences: ", 	sentenceObjects.size());
+		System.out.format("%-40s %d\n", "Number of words: ", 		dirtyWordObjects.size());
+		System.out.format("%-40s %d\n", "Number of stop-words removed: ", 		dirtyWordObjects.size()-cleanWordObjects.size());
+		System.out.format("%-40s %d\n", "Number of words without stop-words: ", cleanWordObjects.size());
+		System.out.format("%-40s %d\n", "Number of unique words w/o stop-words: ", freqMap.size());
+		
+
+	}
+	
+	// used for debugging
+	public ArrayList<Integer> getStats(){
+		ArrayList<Integer> stats = new ArrayList<Integer>();
+		
+		stats.add(lines.size());				//0
+		stats.add(sentenceObjects.size());		//1
+		stats.add(dirtyWordObjects.size());		//2
+		stats.add(stopWordsRemoved);			//3
+		stats.add(cleanWordObjects.size());		//4
+		stats.add(freqMap.size());				//5
+		
+		return stats;
 	}
 }
 
-//TODO: Add text about what's happening. e.g.	 "Now converting words to lower case..."
+//TODO: Add info about what's happening. e.g.	 "Now converting words to lower case..."
 
