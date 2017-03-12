@@ -24,6 +24,10 @@ public class Word {
 		return this.wordText;
 	}
 	
+	public int getBelongingSentenceNo(){
+		return this.belongsToSentenceN;
+	}
+	
 	/** 
 	 * equals() has to be overwritten since the method is accessed through the {@link Runner#doCount doCount()}-method 
 	 * (specifically the Collections.frequency()-method).

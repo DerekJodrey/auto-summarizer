@@ -11,23 +11,31 @@ import java.util.Set;
 public class SentenceBuilder {
 	// declaring variables
 	private static final String SEPERATORS = ". "; 
-	private int stopWordsRemoved=0;															// for debugging
 	private List<String> lines;																
-	private List<Sentence> sentenceObjects = new ArrayList<Sentence>();
+	private static ArrayList<Sentence> sentenceObjects = new ArrayList<Sentence>();
 
 	private List<Word> dirtyWordObjects = new ArrayList<Word>();							// Word-objects with stop-words
 	private ArrayList<Word> cleanWordObjects;												// Word-objects without stop-words	
 	
 	private LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// 	why use linkedhashmap?   order = insertion-order
 	
+	
+	public static ArrayList<Sentence> getSentenceObjects(){
+		return sentenceObjects;
+	}
+	
+	
 	public SentenceBuilder(String language, String filePath){
-		getSentences(language, filePath);
-		getWords(language);
-		removeStopWords(language);	
+		// build list of Sentence objects
+		getSentences(language, filePath);						
 		
-		printNewLines();
-		doCount(cleanWordObjects);
-		printMap();
+		WordBuilder wb = new WordBuilder();
+		dirtyWordObjects = wb.getWords(language, filePath);
+		cleanWordObjects = wb.removeStopWords(language);	
+		freqMap = wb.doCount(cleanWordObjects);
+		
+		printInfo();
+		wb.printMap();
 		printStats();
 				
 
@@ -36,12 +44,16 @@ public class SentenceBuilder {
 	}
 	
 	
+
+	
 	//TODO: New delimiter when sentence ends with question mark
 	/**
 	 *  This class reads every line in the document and splits it into sentences.
 	 *  The method is currently statically set to split for either every dot or every <i>". " (dot and a space)</i> using regular expression. 
+	 *  @param language language code in capital letters
+	 *  @param path filepath
 	 */
-	public void getSentences(String language, String path){
+	public ArrayList<Sentence> getSentences(String language, String path){
 		//String path = null;
 		
 //		if(language.equals("NO"))
@@ -79,101 +91,15 @@ public class SentenceBuilder {
 					sentenceObjects.add(s);
 					//i++;
 				}
-
 			}
-
 		}
-
-	}
-	
-	
-	// retrieve words from the sentence list
-	/**
-	 *  Turn the sentences in {@link SentenceBuilder#sentenceObjects sentenceObjects} to a list of Word-objects. Since this is done with custom
-	 *  Word-objects, each Word has info about which sentence it was affiliated with. 
-	 *  Regular expressions are used to split word, and they're handled differently for each languages. 
-	 */
-	public void getWords(String language){		 
-		 
-		 String[] wordsForCurrentSentence = null;
-		 
-		 // loop through every sentence
-		 for (Sentence sentence : sentenceObjects) {
-			 if(language.equals("NO")) 
-				 wordsForCurrentSentence = sentence.getText().split("([^\\wæøåÆØÅ]+)");	// norwegian: split for every non-word (including æøå)
-			 else if(language.equals("EN"))
-				 wordsForCurrentSentence = sentence.getText().split("([^\\w']+)");		// 	english:  split for every non-word (including ')
-			 else
-				 System.err.println("Please set a valid language code.");
-			 
-			  // sentence number
-			  int sentenceNo = sentence.getSentenceNo();
-			  
-			 // for every sentence, add every word
-			 for (String word : wordsForCurrentSentence) {
-				 Word w = new Word(word.toLowerCase(), sentenceNo);
-				 dirtyWordObjects.add(w); 	
-			}
- 
-		}
-	}
-	
-
-	/**
-	 * Clean up word-list by removing stop-words. 
-	 * {@link SentenceBuilder#dirtyWordObjects dirtyWordObjects} is the input, and a clean list without stop-words will be found in
-	 * {@link SentenceBuilder#cleanWordObjects cleanWordObjects}.  
-	 * @param language sets stop-word file to be used. Set <i>"NO"</i> for norwegian (bokmål) or <i>"EN"</i> for english. 
-	 */
-	public void removeStopWords(String language){
-		List<String> stopWords = null;
-
-		if(language.equals("NO"))
-			stopWords = FileHandler.readFile("files/stopwords-no_nb.txt");
-		else if(language.equals("EN"))
-			stopWords = FileHandler.readFile("files/stopwords-en.txt");
-		else
-			System.err.println("Please set a valid language code.");
-
 		
-		cleanWordObjects = new ArrayList<>(Word.getAllDirtyWords());				// copy array
-		for (Word word : dirtyWordObjects) {
-			if(stopWords.contains(word.getWordText())){
-				cleanWordObjects.remove(word);
-				stopWordsRemoved++;
-			}
-
-		}
-
-
-
-	}
-	
-	
-	// count occurrence of each word
-	public void doCount(ArrayList<Word> list){
-		int freq;
-		
-		for (int i = 0; i < list.size(); i++) {
-			// only run code IFF the key doesn't already exist in the freqMap
-			//System.out.println("-----");
-			//System.out.println("New word: " + !freqMap.containsKey(list.get(i)));
-			//System.out.println("Now considering word: " + list.get(i).getWordText());
-			if(!freqMap.containsKey(list.get(i))){
-				// check frequency of the given string
-				freq = Collections.frequency(list, list.get(i));	
-				freqMap.put(list.get(i), freq);	// (word, frequency)
-				
-
-
-			}
-			
-		}
+		return sentenceObjects;
 	}
 	
 	
 	// used for debugging
-	public void printNewLines(){
+	public void printInfo(){
 		System.out.println("--------------Raw lines from file---------------");
 		for (String line : lines) {
 			System.out.println(line);
@@ -196,24 +122,7 @@ public class SentenceBuilder {
 		for(int i=0; i<cleanWordObjects.size(); i++){
 			System.out.println(i + " " + cleanWordObjects.get(i));
 		}
-		System.out.println("Removed " + stopWordsRemoved + " stop words.");
 		
-	}
-	
-	// used for debugging
-	public void printMap(){
-		//--Word-branch
-		System.out.println("\n----------Each word and number of occurences-----------");
-		// print
-		Set<Word> keySet = freqMap.keySet();										// get the unique keys (Word-object in this case)
-		Word[] uniqueKeys = keySet.toArray(new Word[keySet.size()]);				// create an array
-		for (Word string : uniqueKeys) {
-			int frequency = freqMap.get(string);
-			//System.out.println("Word: " + string.getWordText() + "\t\t Occurences: " + frequency);
-			System.out.printf("Word: %-25s Occurences: %d \n", string.getWordText(), frequency);
-			
-		}
-		System.out.println("Size of keyset is " + keySet.size());
 	}
 	
 	// used for debugging
@@ -234,12 +143,12 @@ public class SentenceBuilder {
 	public ArrayList<Integer> getStats(){
 		ArrayList<Integer> stats = new ArrayList<Integer>();
 		
-		stats.add(lines.size());				//0
-		stats.add(sentenceObjects.size());		//1
-		stats.add(dirtyWordObjects.size());		//2
-		stats.add(stopWordsRemoved);			//3
-		stats.add(cleanWordObjects.size());		//4
-		stats.add(freqMap.size());				//5
+		stats.add(lines.size());											//0
+		stats.add(sentenceObjects.size());									//1
+		stats.add(dirtyWordObjects.size());									//2
+		stats.add(dirtyWordObjects.size()-cleanWordObjects.size());			//3
+		stats.add(cleanWordObjects.size());									//4
+		stats.add(freqMap.size());											//5
 		
 		return stats;
 	}
