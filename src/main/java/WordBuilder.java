@@ -12,8 +12,8 @@ import java.util.Set;
 public class WordBuilder {
 	private List<Word> dirtyWordObjects = new ArrayList<Word>();							// Word-objects with stop-words
 	private ArrayList<Word> cleanWordObjects;												// Word-objects without stop-words	
-	private LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// 	why use linkedhashmap?   order = insertion-order
-
+	private LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// Word:Frequency-map 			why use linkedhashmap?   order = insertion-order
+	private static ArrayList<Word> maxWordList = new ArrayList<>();
 
 	// empty constructor
 	public WordBuilder(){
@@ -114,7 +114,7 @@ public class WordBuilder {
 	 * Find top n words that occur the most in the document. 
 	 * @param nTopEntries number of words to find
 	 */
-	public void findTopNWords(int nTopEntries){
+	public void findTopNWords(int nTopEntries /* boolean nonConsecutive*/){
 		if(nTopEntries == 0){
 			System.err.println("Can't be 0.");
 			return;
@@ -129,10 +129,13 @@ public class WordBuilder {
 		Word tempWord = null;
 		List<Word> keys = new ArrayList<>(freqMap.keySet());
 		
-		ArrayList<Word> maxWordList = new ArrayList<>();
+		// put final results in here
+		maxWordList = new ArrayList<>();
 		
 		// hente ut n antall entries
-		for (int i = 0; i < nTopEntries; i++) {
+		//for (int i = 0; i < nTopEntries; i++) {
+		int counter=0;
+		while(counter!=nTopEntries){
 			Word maxWord = null;
 			
 			// loop gjennom listen for å finne maks
@@ -144,13 +147,20 @@ public class WordBuilder {
 					
 			    }
 			}
+			// after finding top word for this run in the for-loop
 			maxWord = tempWord;
-			maxWordList.add(maxWord);	
+			
+			if(!checkSameSentenceNo(maxWordList, maxWord)){
+				maxWordList.add(maxWord);
+				counter++;
+			}
+			
 			//remove max-word to find second max-word and so on..
 			keys.remove(maxWord);		
 			//reset 
 			tempWord = null;			
 			maxWord = null;
+			
 			
 		}
 		System.out.println("-------------------------------------------");
@@ -159,6 +169,23 @@ public class WordBuilder {
 					maxWordList.get(i).getWordText(), maxWordList.get(i).getWordOccurence(), maxWordList.get(i).getBelongingSentenceNo());
 		}
 				
+	}
+	
+	// check if entries in list has same sentence no.
+	private boolean checkSameSentenceNo(ArrayList<Word> list, Word w){
+		if(w==null)
+			return false;
+		
+		for (int i = 0; i < list.size(); i++) {
+			if(list.get(i).getBelongingSentenceNo() == w.getBelongingSentenceNo())
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public static ArrayList<Word> getMaxWordList(){
+		return maxWordList;
 	}
 	
 	// used for debugging
@@ -176,3 +203,14 @@ public class WordBuilder {
 		System.out.println("Size of keyset is " + keySet.size());
 	}
 }
+
+
+
+
+
+
+
+
+
+
+

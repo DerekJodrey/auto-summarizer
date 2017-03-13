@@ -30,7 +30,7 @@ public class SentenceBuilder {
 		printInfo();
 		wb.printMap();
 		printStats();
-		wb.findTopNWords(1);
+		wb.findTopNWords(5);
 		
 		//FIXME: Handle empty lines/sentences/words/strings
 		
@@ -59,6 +59,7 @@ public class SentenceBuilder {
 //		else
 //			System.err.println("Please set a valid language code.");
 		
+		//TODO: Sentences that end with question(?) mark or exclamation(!) mark
 		
 		FileHandler fh = new FileHandler(path);
 		lines = fh.readFile(path);
