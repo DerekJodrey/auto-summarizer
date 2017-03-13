@@ -1,3 +1,4 @@
+package main.java;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -154,7 +155,8 @@ public class WordBuilder {
 		}
 		System.out.println("-------------------------------------------");
 		for (int i = 0; i < maxWordList.size(); i++) {
-			System.out.format("'%s' is max with %d occurences. \n", maxWordList.get(i).getWordText(), maxWordList.get(i).getWordOccurence());
+			System.out.format("'%s' is max with %d occurences. It belongs to sentence %d.\n", 
+					maxWordList.get(i).getWordText(), maxWordList.get(i).getWordOccurence(), maxWordList.get(i).getBelongingSentenceNo());
 		}
 				
 	}
