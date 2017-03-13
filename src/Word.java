@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Word {
 	private String wordText;
 	private int belongsToSentenceN;
+	private int occurrence=-1;
 	static ArrayList<Word> allDirtyWords= new ArrayList<Word>(); 
 	
 	public Word(String word, int belongsToSentenceN){
@@ -28,6 +29,14 @@ public class Word {
 		return this.belongsToSentenceN;
 	}
 	
+	public void setWordOccurence(int occurence){
+		this.occurrence = occurence;
+	}
+	
+	public int getWordOccurence(){
+		return this.occurrence;
+	}
+	
 	/** 
 	 * equals() has to be overwritten since the method is accessed through the {@link Runner#doCount doCount()}-method 
 	 * (specifically the Collections.frequency()-method).
@@ -48,9 +57,24 @@ public class Word {
 	 */
 	@Override
 	public int hashCode() {
-		
 		return this.wordText.hashCode();	// we're basing the hashcode on 'wordText'
-	  }
+	 }
+	
+	/**
+	 * Compare Word objects based on # of occurrence. 
+	 * @param word
+	 * @return 1 if first object is bigger, 0 if equal
+	 */
+	public int compareTo(Word word){
+		if(this.occurrence < word.occurrence)
+			return -1;
+		else if(this.occurrence > word.occurrence)
+			return 1;
+		
+		return 0;
+		//return Integer.valueOf(this.occurence).compareTo(word.occurence);
+		
+	}
 }
 
 

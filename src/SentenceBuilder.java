@@ -1,29 +1,21 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 /**
- * Takes lines provided by FileHandler and populates lists with Sentence- and Word-objects. These holds lists both with and without stop-words.
+ * Takes lines provided by FileHandler and populates lists with Sentence-objects. 
  * @author Piraveen
  *
  */
 public class SentenceBuilder {
-	// declaring variables
+	// declaring local variables
 	private static final String SEPERATORS = ". "; 
 	private List<String> lines;																
 	private static ArrayList<Sentence> sentenceObjects = new ArrayList<Sentence>();
 
+	// VARIABLES POPULATED BY WORDBUILDER
 	private List<Word> dirtyWordObjects = new ArrayList<Word>();							// Word-objects with stop-words
 	private ArrayList<Word> cleanWordObjects;												// Word-objects without stop-words	
-	
-	private LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// 	why use linkedhashmap?   order = insertion-order
-	
-	
-	public static ArrayList<Sentence> getSentenceObjects(){
-		return sentenceObjects;
-	}
-	
+	private LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// why use linkedhashmap?   order = insertion-order
 	
 	public SentenceBuilder(String language, String filePath){
 		// build list of Sentence objects
@@ -37,13 +29,16 @@ public class SentenceBuilder {
 		printInfo();
 		wb.printMap();
 		printStats();
-				
-
+		wb.findTopNWords(1);
+		
 		//FIXME: Handle empty lines/sentences/words/strings
-		//FIXME: Need to ignore numbers 
+		
 	}
 	
-	
+	// getter
+	public static ArrayList<Sentence> getSentenceObjects(){
+		return sentenceObjects;
+	}
 
 	
 	//TODO: New delimiter when sentence ends with question mark
@@ -53,7 +48,7 @@ public class SentenceBuilder {
 	 *  @param language language code in capital letters
 	 *  @param path filepath
 	 */
-	public ArrayList<Sentence> getSentences(String language, String path){
+	private ArrayList<Sentence> getSentences(String language, String path){
 		//String path = null;
 		
 //		if(language.equals("NO"))
@@ -66,7 +61,6 @@ public class SentenceBuilder {
 		
 		FileHandler fh = new FileHandler(path);
 		lines = fh.readFile(path);
-		int i=0;
 		// read lines 
 		for (String line : lines) {
 			
@@ -89,17 +83,18 @@ public class SentenceBuilder {
 
 					Sentence s = new Sentence(aSentence);
 					sentenceObjects.add(s);
-					//i++;
 				}
 			}
 		}
 		
 		return sentenceObjects;
 	}
+
+
 	
 	
 	// used for debugging
-	public void printInfo(){
+	private void printInfo(){
 		System.out.println("--------------Raw lines from file---------------");
 		for (String line : lines) {
 			System.out.println(line);
@@ -126,7 +121,7 @@ public class SentenceBuilder {
 	}
 	
 	// used for debugging
-	public void printStats(){
+	private void printStats(){
 		
 		System.out.println("\n----------------Stats---------------------");
 		System.out.format("%-40s %d\n", "Number of lines: ", 		lines.size());

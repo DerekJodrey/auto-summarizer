@@ -3,7 +3,11 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * Takes sentenceObjects and splits them into Word-objects. These holds lists both with and without stop-words.
+ * @author Piraveen
+ *
+ */
 public class WordBuilder {
 	private List<Word> dirtyWordObjects = new ArrayList<Word>();							// Word-objects with stop-words
 	private ArrayList<Word> cleanWordObjects;												// Word-objects without stop-words	
@@ -12,7 +16,7 @@ public class WordBuilder {
 
 	// empty constructor
 	public WordBuilder(){
-
+		//FIXME: Need to ignore numbers
 	}
 
 	// retrieve words from the sentence list
@@ -49,8 +53,8 @@ public class WordBuilder {
 		}
 		return dirtyWordObjects;
 	}
-
-
+ 
+	
 	/**
 	 * Clean up word-list by removing stop-words. 
 	 * {@link SentenceBuilder#dirtyWordObjects dirtyWordObjects} is the input, and a clean list without stop-words will be found in
@@ -85,19 +89,74 @@ public class WordBuilder {
 	// count occurrence of each word
 	public LinkedHashMap<Word, Integer> doCount(ArrayList<Word> list){
 		int freq;
+		Word currentWord;
 
 		for (int i = 0; i < list.size(); i++) {
+			currentWord = list.get(i);
+			
 			// only run code IFF the key doesn't already exist in the freqMap
-			if(!freqMap.containsKey(list.get(i))){
+			if(!freqMap.containsKey(currentWord)){
 				// check frequency of the given string
-				freq = Collections.frequency(list, list.get(i));	
-				freqMap.put(list.get(i), freq);	// (word, frequency)
+				freq = Collections.frequency(list, currentWord);	
+				freqMap.put(currentWord, freq);	// (word, frequency)
+				
+				currentWord.setWordOccurence(freq);
 				
 			}
 
 		}
 
 		return freqMap;
+	}
+	
+	/**
+	 * Find top n words that occur the most in the document. 
+	 * @param nTopEntries number of words to find
+	 */
+	public void findTopNWords(int nTopEntries){
+		if(nTopEntries == 0){
+			System.err.println("Can't be 0.");
+			return;
+		}
+		else if(nTopEntries > freqMap.size()){
+			System.err.println("Entry number higher than number of total entries.");
+			System.err.println("Aborting...");
+			return;
+		}
+			
+		
+		Word tempWord = null;
+		List<Word> keys = new ArrayList<>(freqMap.keySet());
+		
+		ArrayList<Word> maxWordList = new ArrayList<>();
+		
+		// hente ut n antall entries
+		for (int i = 0; i < nTopEntries; i++) {
+			Word maxWord = null;
+			
+			// loop gjennom listen for å finne maks
+			for (Word word : keys) {
+				if (tempWord == null || word.compareTo(tempWord) > 0)
+			    {
+					tempWord = word;
+					
+					
+			    }
+			}
+			maxWord = tempWord;
+			maxWordList.add(maxWord);	
+			//remove max-word to find second max-word and so on..
+			keys.remove(maxWord);		
+			//reset 
+			tempWord = null;			
+			maxWord = null;
+			
+		}
+		System.out.println("-------------------------------------------");
+		for (int i = 0; i < maxWordList.size(); i++) {
+			System.out.format("'%s' is max with %d occurences. \n", maxWordList.get(i).getWordText(), maxWordList.get(i).getWordOccurence());
+		}
+				
 	}
 	
 	// used for debugging

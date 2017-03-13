@@ -26,4 +26,4 @@ public class Ranking {
 //TODO: Refactoring - make methods and variables private
 //TODO: Unit testing - JUnit. 
 //TODO: EMMA - Open-source code coverage tool for Java
-//TODO: Python script som tar en hel tekst og gir en linebreak hvis en setning er større enn x antall tegn. 
+//TODO: Lage Python script som tar en hel tekst og gir en linebreak hvis en setning er større enn x antall tegn. 
