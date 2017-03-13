@@ -20,7 +20,7 @@ public class SentenceBuilder {
 	
 	public SentenceBuilder(String language, String filePath){
 		// build list of Sentence objects
-		getSentences(language, filePath);						
+		getSentences( filePath);						
 		
 		WordBuilder wb = new WordBuilder();
 		dirtyWordObjects = wb.getWords(language, filePath);
@@ -28,7 +28,7 @@ public class SentenceBuilder {
 		freqMap = wb.doCount(cleanWordObjects);
 		
 		printInfo();
-		wb.printMap();
+		wb.printFreqMap();
 		printStats();
 		wb.findTopNWords(5);
 		
@@ -49,7 +49,7 @@ public class SentenceBuilder {
 	 *  @param language language code in capital letters
 	 *  @param path filepath
 	 */
-	private ArrayList<Sentence> getSentences(String language, String path){
+	private ArrayList<Sentence> getSentences( String path){
 		//String path = null;
 		
 //		if(language.equals("NO"))
@@ -92,7 +92,7 @@ public class SentenceBuilder {
 		return sentenceObjects;
 	}
 
-
+	/*-----------------------------------------------Debugging methods-----------------------------------------------------------*/
 	
 	
 	// used for debugging

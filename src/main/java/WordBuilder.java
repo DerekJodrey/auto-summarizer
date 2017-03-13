@@ -111,7 +111,7 @@ public class WordBuilder {
 	}
 	
 	/**
-	 * Find top n words that occur the most in the document. 
+	 * Find top n words that occur the most in the document. Every word is from a different sentence. 
 	 * @param nTopEntries number of words to find
 	 */
 	public void findTopNWords(int nTopEntries /* boolean nonConsecutive*/){
@@ -150,6 +150,8 @@ public class WordBuilder {
 			// after finding top word for this run in the for-loop
 			maxWord = tempWord;
 			
+			// add word to final result-list only if there isn't already
+			// a word that belongs to the same sentence
 			if(!checkSameSentenceNo(maxWordList, maxWord)){
 				maxWordList.add(maxWord);
 				counter++;
@@ -171,7 +173,13 @@ public class WordBuilder {
 				
 	}
 	
-	// check if entries in list has same sentence no.
+	
+	/**
+	 * Check if entries in list has same sentence no.
+	 * @param list the list we're checking against
+	 * @param w Word
+	 * @return true if thers's already a word with same sentence no.
+	 */
 	private boolean checkSameSentenceNo(ArrayList<Word> list, Word w){
 		if(w==null)
 			return false;
@@ -189,7 +197,7 @@ public class WordBuilder {
 	}
 	
 	// used for debugging
-	public void printMap(){
+	public void printFreqMap(){
 		System.out.println("\n----------Each word and number of occurences-----------");
 		// print
 		Set<Word> keySet = freqMap.keySet();										// get the unique keys (Word-object in this case)

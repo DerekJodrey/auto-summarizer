@@ -1,5 +1,6 @@
 package main.java;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Word {
 	private String wordText;
@@ -64,18 +65,22 @@ public class Word {
 	/**
 	 * Compare Word objects based on # of occurrence. 
 	 * @param word
-	 * @return 1 if first object is bigger, 0 if equal
+	 * @return 1 if first object is bigger, -1 if smaller and 0 if equal
 	 */
 	public int compareTo(Word word){
 		if(this.occurrence < word.occurrence)
 			return -1;
 		else if(this.occurrence > word.occurrence)
 			return 1;
-		
+
 		return 0;
 		//return Integer.valueOf(this.occurence).compareTo(word.occurence);
 		
 	}
+	
+
+
+
 }
 
 
