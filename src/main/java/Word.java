@@ -1,6 +1,5 @@
 package main.java;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Word {
 	private String wordText;
@@ -59,7 +58,7 @@ public class Word {
 	 */
 	@Override
 	public int hashCode() {
-		return this.wordText.hashCode();	// we're basing the hashcode on 'wordText'
+		return this.wordText.hashCode();	// we're basing the hashCode on 'wordText'
 	 }
 	
 	/**
@@ -78,17 +77,7 @@ public class Word {
 		
 	}
 	
-
-
-
 }
-
-
-
-
-
-
-
 
 
 

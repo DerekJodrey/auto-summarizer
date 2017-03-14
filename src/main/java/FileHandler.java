@@ -7,15 +7,12 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class FileHandler {
-	private static List<String> lines = null;	//an entry for every line
 	
 	/**
-	 * Constructor. 
-	 * @param filePath
+	 * Empty constructor.
 	 */
-	public FileHandler(String filePath){
-		//readFile(filePath);
-	}
+	public FileHandler(){}
+	
 	
 	/**
 	 * Reads file and creates a new entry for every line in the arraylist {@link#lines lines.}   
@@ -23,11 +20,14 @@ public class FileHandler {
 	 * @return
 	 */
 	public static List<String> readFile(String filePath){
-			
+		// one entry for every line	
+		List<String> lines = null;	
 		
 		// create path for src-file
 		Path sourceFile = Paths.get(filePath);
 		Charset charset = Charset.forName("ISO-8859-1");
+		
+		//TODO: Use try-with-resource to auto-close resource
 		
 		try {
 			 lines = Files.readAllLines(sourceFile, charset);
@@ -39,17 +39,5 @@ public class FileHandler {
 		return lines;
 	}
 	
-
-	/**
-	 * Print everything in the file.
-	 */
-	public static void printAll(){
-		// print all lines
-		for(String s: lines){
-			System.out.println(s);
-		}
-		
-		//System.out.println(Charset.availableCharsets().toString());
-	}
 	
 }

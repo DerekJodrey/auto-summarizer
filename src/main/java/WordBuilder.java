@@ -3,18 +3,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 /**
  * Takes sentenceObjects and splits them into Word-objects. These holds lists both with and without stop-words.
  * @author Piraveen
  *
  */
 public class WordBuilder {
-	private List<Word> dirtyWordObjects = new ArrayList<Word>();							// Word-objects with stop-words
-	private ArrayList<Word> cleanWordObjects;												// Word-objects without stop-words	
-	private LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// Word:Frequency-map 			why use linkedhashmap?   order = insertion-order
-	private static ArrayList<Word> maxWordList = new ArrayList<>();
-
+	private static ArrayList<Word> dirtyWordObjects = new ArrayList<Word>();						// Word-objects with stop-words
+	private static ArrayList<Word> cleanWordObjects;												// Word-objects without stop-words	
+	private static LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// Word:Frequency-map 			why use linkedhashmap?   order = insertion-order
+	private static ArrayList<Word> maxWordList = new ArrayList<>();									// Top N words based on occurrence
+	
+	
 	// empty constructor
 	public WordBuilder(){
 		//FIXME: Need to ignore numbers
@@ -54,7 +54,22 @@ public class WordBuilder {
 		}
 		return dirtyWordObjects;
 	}
- 
+	
+	// getter
+	public static ArrayList<Word> getCleanWordObjects(){
+		return cleanWordObjects;
+	}
+	
+	// getter
+	public static ArrayList<Word> getDirtyWordObjects(){
+		return dirtyWordObjects;
+	}
+	
+	// getter
+	public static LinkedHashMap<Word, Integer> getfreqMap(){
+		return freqMap;
+	}
+
 	
 	/**
 	 * Clean up word-list by removing stop-words. 
@@ -64,7 +79,7 @@ public class WordBuilder {
 	 */
 	public ArrayList<Word> removeStopWords(String language){
 		List<String> stopWords = null;
-
+		
 		if(language.equals("NO"))
 			stopWords = FileHandler.readFile("files/stopwords-no_nb.txt");
 		else if(language.equals("EN"))
@@ -77,7 +92,7 @@ public class WordBuilder {
 		for (Word word : dirtyWordObjects) {
 			if(stopWords.contains(word.getWordText())){
 				// remove stop-words
-				cleanWordObjects.remove(word);										
+				cleanWordObjects.remove(word);	
 			}
 
 		}
@@ -129,11 +144,9 @@ public class WordBuilder {
 		Word tempWord = null;
 		List<Word> keys = new ArrayList<>(freqMap.keySet());
 		
-		// put final results in here
-		maxWordList = new ArrayList<>();
+
 		
 		// hente ut n antall entries
-		//for (int i = 0; i < nTopEntries; i++) {
 		int counter=0;
 		while(counter!=nTopEntries){
 			Word maxWord = null;
@@ -164,14 +177,9 @@ public class WordBuilder {
 			maxWord = null;
 			
 			
-		}
-		System.out.println("-------------------------------------------");
-		for (int i = 0; i < maxWordList.size(); i++) {
-			System.out.format("'%s' is max with %d occurences. It belongs to sentence %d.\n", 
-					maxWordList.get(i).getWordText(), maxWordList.get(i).getWordOccurence(), maxWordList.get(i).getBelongingSentenceNo());
-		}
-				
+		}		
 	}
+	
 	
 	
 	/**
@@ -196,25 +204,8 @@ public class WordBuilder {
 		return maxWordList;
 	}
 	
-	// used for debugging
-	public void printFreqMap(){
-		System.out.println("\n----------Each word and number of occurences-----------");
-		// print
-		Set<Word> keySet = freqMap.keySet();										// get the unique keys (Word-object in this case)
-		Word[] uniqueKeys = keySet.toArray(new Word[keySet.size()]);				// create an array
-		for (Word string : uniqueKeys) {
-			int frequency = freqMap.get(string);
-			//System.out.println("Word: " + string.getWordText() + "\t\t Occurences: " + frequency);
-			System.out.printf("Word: %-25s Occurences: %-10d ...belongs to sentence %d\n", string.getWordText(), frequency, string.getBelongingSentenceNo());
-			
-		}
-		System.out.println("Size of keyset is " + keySet.size());
-	}
+
 }
-
-
-
-
 
 
 
