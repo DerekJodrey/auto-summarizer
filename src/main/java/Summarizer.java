@@ -27,10 +27,11 @@ public class Summarizer {
 	
 	// TODO: Use getStats() to analyze how much the text has been reduced (in %)
 	
-	
 	// TODO: Write the summary to a file (.txt)
 	// TODO: GUI
 	// TODO: There should also be the option to not have consecutive sentences. 
+	
+
 	
 	
 	public void createSummary(){
@@ -55,6 +56,7 @@ public class Summarizer {
 // * Unit testing - JUnit. 
 // * EMMA - Open-source code coverage tool for Java. 
 // * EclEmma for code coverage with Eclipse
+// * Analyze memory management/execution time (benchmark analysis)/ algorithm complexity (Big-O)
 // * Lage Python script som tar en hel tekst og gir en linebreak hvis en setning er større enn x antall tegn. 
 
 // DONE: Given X amount of sentences, the function will get top X number of words used in the text. - OK
