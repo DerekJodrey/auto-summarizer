@@ -4,9 +4,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 /**
- * Takes sentenceObjects and splits them into Word-objects. These holds lists both with and without stop-words.
+ * Takes sentenceObjects and splits them into Word-objects. 
  * @author Piraveen
- *
  */
 public class WordBuilder {
 	private static ArrayList<Word> dirtyWordObjects = new ArrayList<Word>();						// Word-objects with stop-words
@@ -14,17 +13,20 @@ public class WordBuilder {
 	private static LinkedHashMap<Word, Integer> freqMap = new LinkedHashMap<Word, Integer>();		// Word:Frequency-map 			why use linkedhashmap?   order = insertion-order
 	private static ArrayList<Word> maxWordList = new ArrayList<>();									// Top N words based on occurrence
 	
-	
-	// empty constructor
-	public WordBuilder(){
-		//FIXME: Need to ignore numbers
-	}
+	//FIXME: Need to ignore numbers
+	/**
+	 * Empty class constructor
+	 */
+	public WordBuilder(){}
 
 	// retrieve words from the sentence list
 	/**
-	 *  Turn the sentences in {@link SentenceBuilder#sentenceObjects sentenceObjects} to a list of Word-objects. Since this is done with custom
-	 *  Word-objects, each Word has info about which sentence it was affiliated with. 
-	 *  Regular expressions are used to split word, and they're handled differently for each languages. 
+	 * Turn the sentences in {@link SentenceBuilder#sentenceObjects sentenceObjects} to a list of Word-objects. Since this is done with custom
+	 * Word-objects, each Word has info about which sentence it was affiliated with.
+	 * @param language two letter language code (ISO 639-1)
+	 * @param path file path
+	 * @return list of Word-objects
+	 * @see Word
 	 */
 	public List<Word> getWords(String language, String path){		 
 		// get list of sentence objects from SentenceBuilder
@@ -76,6 +78,8 @@ public class WordBuilder {
 	 * {@link SentenceBuilder#dirtyWordObjects dirtyWordObjects} is the input, and a clean list without stop-words will be found in
 	 * {@link SentenceBuilder#cleanWordObjects cleanWordObjects}.  
 	 * @param language sets stop-word file to be used. Set <i>"NO"</i> for norwegian (bokmål) or <i>"EN"</i> for english. 
+	 * @return list of Word-objects
+	 * @see Word
 	 */
 	public ArrayList<Word> removeStopWords(String language){
 		List<String> stopWords = null;

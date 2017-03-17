@@ -1,12 +1,16 @@
 package main.java;
 import java.util.ArrayList;
 import java.util.Collections;
-
+/**
+ * Final step in which the summary is created. 
+ * @author Piraveen
+ *
+ */
 public class Summarizer {
 	private ArrayList<Word> maxWordList = WordBuilder.getMaxWordList();
 	
 	/**
-	 * Empty constructor
+	 * Empty class constructor
 	 */
 	public Summarizer(){}
 	
@@ -15,6 +19,8 @@ public class Summarizer {
 	
 	/**
 	 * Uses a custom Comparator class, WordComparator, to sort a list of Word-objects based on their belonging sentence no. 
+	 * @see WordBuilder#findTopNWords(int)
+	 * @see WordComparator
 	 */
 	public void sortTopNWordList(){
 		Collections.sort(maxWordList, new WordComparator()  {
@@ -33,7 +39,9 @@ public class Summarizer {
 	
 
 	
-	
+	/**
+	 * Create final summary.
+	 */
 	public void createSummary(){
 		ArrayList<Sentence> sentences = SentenceBuilder.getSentenceObjects();
 		

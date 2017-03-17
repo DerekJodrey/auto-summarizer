@@ -5,19 +5,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
+/**
+ * Responsible for turning raw text into something the application can work with in memory. 
+ * @author Piraveen
+ *
+ */
 public class FileHandler {
 	
 	/**
-	 * Empty constructor.
+	 * Empty class constructor.
 	 */
 	public FileHandler(){}
 	
 	
 	/**
-	 * Reads file and creates a new entry for every line in the arraylist {@link#lines lines.}   
-	 * @param filePath relative path of the desired file to be bread
-	 * @return
+	 * Reads a file and creates a new entry for every line.    
+	 * @param filePath either relative or absolute filepath
+	 * @return list of raw lines
 	 */
 	public static List<String> readFile(String filePath){
 		// one entry for every line	

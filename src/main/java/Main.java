@@ -1,8 +1,8 @@
 package main.java;
+
 /**
- * 
  * @author Piraveen
- *
+ * @version 1.0.0
  */
 public class Main {
 

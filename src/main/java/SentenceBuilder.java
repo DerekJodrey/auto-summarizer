@@ -2,7 +2,7 @@ package main.java;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Takes lines provided by FileHandler and populates lists with Sentence-objects. 
+ * Takes lines provided by FileHandler and populates lists with {@link Sentence Sentence}-objects. 
  * @author Piraveen
  *
  */
@@ -33,10 +33,10 @@ public class SentenceBuilder {
 	
 
 	/**
-	 *  This class reads every line in the document and splits it into sentences.
-	 *  The method is currently statically set to split for either every dot or every <i>". " (dot and a space)</i> using regular expression. 
+	 *  This method reads every line in the file and splits it into sentences.
+	 *  The method is currently statically set to split for either every dot or every dot and a space using regular expression. 
 	 *  @param language language code in capital letters
-	 *  @param path filepath
+	 *  @param path either relative or absolute filepath
 	 */
 	private ArrayList<Sentence> getSentences( String path){
 		
