@@ -1,9 +1,9 @@
-package main.java;
+## Usage
+We want to get a 5-line summary of [file-medium_en.txt](./files/file-medium_en.txt) about a LCA on iPhone 6.  
+`main.java`:
 
-/**
- * @author Piraveen
- * @version 1.0.0
- */
+```java	
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -37,6 +37,28 @@ public class Main {
 		DebugClass.printTopNWords();
 		sumrizr.createSummary();
 		
-	}
+		}
 
 }
+```
+
+## Output:
+
+```
+----------------Stats---------------------
+Number of lines:                         23
+Number of sentences:                     53
+Number of words:                         918
+Number of stop-words removed:            486
+Number of words without stop-words:      432
+Number of unique words w/o stop-words:   271
+
+------------------Summary-------------------
+In this report, the reader will be presented a life-cycle assessment on the iPhone 6 manufactured by Apple.
+The reader will be presented both positive and negative aspects of the product.
+The phone is equipped with modern features, both hardware and design wise, yet at what cost.
+While in use, the phone will require energy for recharging.
+A way to avoid unnecessary emissions caused from this could be by offering a new pair of earplugs only to users whom have never owned an iPhone before.
+
+Text was reduced to 5 sentences. 
+```
