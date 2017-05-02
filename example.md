@@ -1,5 +1,5 @@
 ## Usage
-We want to get a 5-line summary of [file-medium_en.txt](./files/file-medium_en.txt) about a LCA on iPhone 6.  
+We want to get a 5-line summary of [file-medium_en.txt](./files/file-medium_en.txt) which discusses the Life Cycle Assessment on a iPhone 6.  
 `main.java`:
 
 ```java	
@@ -9,8 +9,8 @@ public class Main {
 	public static void main(String[] args) {
 		
 		String FILEPATH = "files/file-medium_en.txt";	// the file you want to summarize
-		String LANGCODE = "EN";							// "NO"=norwegian or "EN"=english (decides which stop-word dict to use)				
-		int LENGTH = 5;									// Summary length
+		String LANGCODE = "EN";				// "NO"=norwegian or "EN"=english (decides which stop-word dict to use)				
+		int LENGTH = 5;					// Summary length
 		
 		// read file and create Sentence objects
 		SentenceBuilder sb = new SentenceBuilder(LANGCODE, FILEPATH);		

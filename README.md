@@ -1,17 +1,15 @@
 # Summarizr
 
 ![Summarizr](logo3.png)
-https://logomakr.com/4ir3A0
 
-Application that does some next-level-CSI magic and returns a summary of a text. It's currently implemented with a simple ranking algorithm.  
 
-Under development... 
+Application returns a summary of a text. It's currently implemented with a simple ranking algorithm based on word occurrences.
 
 ### Example
 See [example](./example.md) for example dump. 
 
 ### Files
-* file_x.txt is a file with dummy text. x is the language code according to the [ISO 639-1 standard](https://en.wikipedia.org/wiki/ISO_639-1). 
+* file_x.txt is a file with dummy text. *x* is the language code according to the [ISO 639-1 standard](https://en.wikipedia.org/wiki/ISO_639-1). 
 * stopwords-x.txt is a list of stop-words for respective language. 
 
 ### Documentation
