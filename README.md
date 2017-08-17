@@ -1,5 +1,3 @@
-# Summarizr
-
 ![Summarizr](logo3.png)
 
 
